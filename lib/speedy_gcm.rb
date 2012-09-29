@@ -3,95 +3,43 @@ require "speedy_gcm/version"
 module SpeedyGCM
 
   class API
-    AUTH_URL = 'https://www.google.com/accounts/ClientLogin'
-    PUSH_URL = 'https://android.apis.google.com/c2dm/send'
+    PUSH_URL = 'https://android.googleapis.com/gcm/send'
 
     class << self
 
-      def set_account(api_email, api_password)
-        @email = api_email
-        @password = api_password
+      def set_account(auth_token)
+        @auth_token = auth_token
       end
 
       # Send a notification
       #
       # :registration_id is required.
-      # :collapse_key is optional.
-      #
-      # Other +options+ will be sent as "data.<key>=<value>"
+      # :message is required.
       #
       # +options+ = {
       #   :registration_id => "...",
       #   :message => "Hi!",
-      #   :extra_data => 42,
-      #   :collapse_key => "some-collapse-key"
       # }
       def send_notification(options)
-        get_auth_token(@email, @password) unless @auth_token
-
         response = notificationRequest(options)
-
-        # the response can be one of three codes:
-        #   200 (success)
-        #   401 (auth failed)
-        #   503 (retry later with exponential backoff)
-        #   see more documentation here:  http://code.google.com/android/c2dm/#testing
-        if response.code.eql? "200"
-
-          # look for the header 'Update-Client-Auth' in the response you get after sending
-          # a message. It indicates that this is the token to be used for the next message to send.
-          response.each_header do |key, value|
-            if key == "Update-Client-Auth"
-              @auth_token = value
-            end
-          end
-
-          return response
-
-        elsif response.code.eql? "401"
-
-          # auth failed.  Refresh auth key and requeue
-          @auth_token = get_auth_token(@email, @password)
-
-          response = notificationRequest(options)
-
-          return response
-
-        elsif response.code.eql? "503"
-
-          # service un-available.
-          return response
-
-        end
-      end
-
-      def get_auth_token(email, password)
-        data = "accountType=HOSTED_OR_GOOGLE&Email=#{email}&Passwd=#{password}&service=ac2dm"
-        headers = { "Content-type" => "application/x-www-form-urlencoded",
-                    "Content-length" => "#{data.length}"}
-
-        uri = URI.parse(AUTH_URL)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        response = http.post(uri.path, data, headers)
-        return response.body.split("\n")[2].gsub("Auth=", "")
+        return response
       end
 
       def notificationRequest(options)
-        data = {}
-        options.each do |key, value|
-          if [:registration_id, "registration_id", :collapse_key, "collapse_key"].include? key
-            data[key] = value
-          else
-            data["data.#{key}"] = value
-          end
-        end
+        params ={
+          :registration_ids => [
+            options[:registration_id]
+          ],
+          :data => { 
+              :message => options[:message] 
+          },
+          :delay_while_idle => true
+        }
 
-        data = data.map{|k, v| "&#{k}=#{URI.escape(v.to_s)}"}.reduce{|k, v| k + v}
-        headers = { "Authorization" => "GoogleLogin auth=#{@auth_token}",
-                    "Content-type" => "application/x-www-form-urlencoded",
+        data = params.as_json
+
+        headers = { "Authorization" => "Authorization:key=#{@auth_token}",
+                    "Content-type" => "application/json",
                     "Content-length" => "#{data.length}" }
         uri = URI.parse(PUSH_URL)
         http = Net::HTTP.new(uri.host, uri.port)
