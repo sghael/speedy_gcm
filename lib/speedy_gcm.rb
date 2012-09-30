@@ -46,13 +46,9 @@ module SpeedyGCM
       end
 
       private
-
       def message_validation(message_opts)
         # check if message_opts has required info
         raise ArgumentError, "registration_ids is a required param of the GCM message" unless message_opts.has_key? :registration_ids
-
-        # unpack the registration_ids
-        registration_ids = message_opts[:registration_ids]
 
         # if you use the delay_while_idle is an included parameter, it must be a boolean
         if message_opts.has_key? :delay_while_idle
@@ -70,6 +66,7 @@ module SpeedyGCM
         end
 
         # registration_ids must contain at least 1 and at most 1000 registration IDs
+        registration_ids = message_opts[:registration_ids]
         if (registration_ids.length < 1) or (registration_ids.length > 1000)
           raise ArgumentError, "registration_ids must contain at least 1 and at most 1000 registration IDs"
         end
