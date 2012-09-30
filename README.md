@@ -30,6 +30,9 @@ Also, make sure 'net/http' and 'net/https' are available:
     require "net/http"
     require "net/https"
 
+The 'shoulda' gem is required for testing:
+
+    $ gem install 'shoulda'
 
 ##Compatibility
 
