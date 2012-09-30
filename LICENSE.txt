@@ -1,4 +1,4 @@
-Copyright (c) 2010 Amro Mousa, (c) 2011 Brandon Keene, (c) 2011 Sandeep Ghael
+Copyright (c) 2010 Amro Mousa, (c) 2011 Brandon Keene, (c) 2012 Sandeep Ghael, (c) 2012 Keith Ballinger
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

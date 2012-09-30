@@ -47,7 +47,7 @@ For a Rails app, a good place to put the following would be in config/initialize
 
     SpeedyGCM::API.set_account(GCM_API_KEY)
 
-Then, where you want to make a GCM call in your code, create an options hash and pass it to send_notification():
+Then, where you want to make a GCM call in your code, create an message_options hash and pass it to send_notification():
 
     message_options = {
       :registration_ids => [<array of registration ids>],
@@ -60,7 +60,7 @@ Then, where you want to make a GCM call in your code, create an options hash and
 
     response = SpeedyGCM::API.send_notification(message_options)
 
-    puts response[:code]  # some response code like 200
+    puts response[:code]  # some http response code like 200
     puts response[:data]  # usually nil is returned
 
 Note:  there are blocking calls in both .set_account() and .send_notification().  You should use an async queue like [Sidekiq](https://github.com/mperham/sidekiq) to ensure a non-blocking code path in your application code, particularly for the .send_notification() call.
