@@ -7,13 +7,14 @@ Speedy GCM sends push notifications to Android devices via Google's [GCM](http:/
 
 Pull requests are welcome!
 
-# How is this GEM different than other C2DM gems?
+# What is this GCM gem more awesome?
 
 - Simple Ruby implementation.
 - No dependencies.
 - Implemented against the JSON based service for GCM.  If you need text/plain support look elsewhere.
 - Validation of your message options.
-- Tests
+- Test coverage
+- Simple way to test your android client from the command line
 
 
 ##Installation
