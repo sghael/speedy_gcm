@@ -7,11 +7,9 @@ Gem::Specification.new do |s|
   s.version     = SpeedyGCM::VERSION
   s.authors     = ["Sandeep Ghael"]
   s.email       = ["sghael@ravidapp.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/sghael/speedy_gcm"
   s.summary     = %q{Speedy GCM is an intelligent gem for sending push notifications to Android devices via GCM.}
   s.description = %q{Speedy GCM efficiently sends push notifications to Android devices via GCM (Google Cloud Messaging).}
-
-  s.rubyforge_project = "speedy_gcm"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

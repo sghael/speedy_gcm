@@ -1,6 +1,3 @@
-# THIS IS A WORK IN PROGRESS.  DO NOT USE THIS CODE YET.
-# (9/30/2012)
-
 # Speedy GCM
 
 Speedy GCM sends push notifications to Android devices via Google's [GCM](http://developer.android.com/guide/google/gcm/index.html) (Google Cloud Messaging for Android).
