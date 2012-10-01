@@ -143,20 +143,6 @@ class TestSpeedyGCM < Test::Unit::TestCase
     end
   end
 
-  should "not raise an error if a send notification call succeeds" do
-    assert_nothing_raised do
-      SpeedyGCM::API.set_account(GCM_API_KEY)
-
-      message_options = {}
-      message_options.merge!({ :registration_ids => [1] })
-      message_options.merge!({ :collapse_key => "foobar" })
-      message_options.merge!({ :data => { :score => "3x1" } })
-      message_options.merge!({ :time_to_live => 1 })
-
-      response = SpeedyGCM::API.send_notification(message_options)
-    end
-  end
-
   should "not raise an error and send a message with a success response" do
     assert_nothing_raised do
       SpeedyGCM::API.set_account(GCM_API_KEY)
@@ -169,9 +155,6 @@ class TestSpeedyGCM < Test::Unit::TestCase
       response = SpeedyGCM::API.send_notification(message_options)
 
       assert response[:code].eql? 200
-
-      # puts response[:code]
-      # puts response[:message]
     end
   end
 
