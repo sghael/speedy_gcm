@@ -32,6 +32,9 @@ module SpeedyGCM
         headers = { "Content-Type" => "application/json",
                     "Authorization" => "key=#{@api_key}" }
 
+        # symbolize all keys
+        message_opts = symbolize_keys(message_opts)
+
         # validate the message options
         message_validation(message_opts)
 
@@ -46,6 +49,14 @@ module SpeedyGCM
       end
 
       private
+
+      def symbolize_keys(myhash)
+        myhash.keys.each do |key|
+          myhash[(key.to_sym rescue key) || key] = myhash.delete(key)
+        end
+        return myhash
+      end
+
       def message_validation(message_opts)
         # check if message_opts has required info
         raise ArgumentError, "registration_ids is a required param of the GCM message" unless message_opts.has_key? :registration_ids
@@ -67,6 +78,7 @@ module SpeedyGCM
 
         # registration_ids must contain at least 1 and at most 1000 registration IDs
         registration_ids = message_opts[:registration_ids]
+
         if (registration_ids.length < 1) or (registration_ids.length > 1000)
           raise ArgumentError, "registration_ids must contain at least 1 and at most 1000 registration IDs"
         end
