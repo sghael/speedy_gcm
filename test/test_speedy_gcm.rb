@@ -7,6 +7,11 @@ require "net/https"
 
 class TestSpeedyGCM < Test::Unit::TestCase
 
+  # If you receive an "Unavailable" error code when you try to send a GCM:
+  # Generate a Browser API Key from the Google APIs Console, and use it instead of the server key in the "Authorization" header. Once you do that, this error will go away.
+  # This is caused by a serious mistake in the GCM Documentation that states you should use a Server Key in the Authorization header (as written here:  http://developer.android.com/guide/google/gcm/gs.html)
+
+  # use a "browser_api_key" - see note above!
   GCM_API_KEY = "TODO - Fill in with your GCM API Key"
   TEST_PHONE_GCM_REGISTRATION_ID = "TODO - Fill in with some GCM Registration ID"
 
