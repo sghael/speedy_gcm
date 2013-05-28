@@ -83,7 +83,7 @@ module SpeedyGCM
           raise ArgumentError, "registration_ids must contain at least 1 and at most 1000 registration IDs"
         end
 
-        message_opts_json = message_opts.to_json
+        message_opts_json = message_opts.except(:registration_ids).to_json
 
         if (message_opts_json.to_s.bytesize > 4096)
           # data must be less than 4kb in length
