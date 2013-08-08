@@ -4,3 +4,4 @@
 .rvmrc
 Gemfile.lock
 *.gem
+.idea/
