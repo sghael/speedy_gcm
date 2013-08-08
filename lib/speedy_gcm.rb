@@ -83,9 +83,11 @@ module SpeedyGCM
           raise ArgumentError, "registration_ids must contain at least 1 and at most 1000 registration IDs"
         end
 
-        message_opts_json = message_opts.except(:registration_ids).to_json
+        # create a new hash without the registration_ids, and use that to test bytesize
+        # not using .except(:key) here since that's Rails specific
+        message_opts_except_reg_ids = message_opts.clone.tap { |hs| hs.delete(:registration_ids) }
 
-        if (message_opts_json.to_s.bytesize > 4096)
+        if message_opts_except_reg_ids.to_json.to_s.bytesize > 4096
           # data must be less than 4kb in length
           raise StandardError, "the size of the message is over 4kb"
         end
